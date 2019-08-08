@@ -1,5 +1,6 @@
 <template>
 <div>
+    <Header />
     <div class="bg-f5f5f5 p-b-10">
         <div class="currentloc bg-f5f5f5 clear">
             <div class="center f12">
@@ -209,11 +210,23 @@
             <ul id="tablist" class="tc"></ul>
         </div>
     </div>
+    <Footer />
 </div>
+
 </template>
+<script>
+import Header from '@/components/Header.vue'
+import Footer from '@/components/Footer.vue'
+export default {
+  components: {
+    Footer,
+    Header
+  }
+}
+</script>
 <style lang="scss" scoped>
-@import '../assets/base.css';
-@import '../assets/style.css';
-@import '../assets/idialog.css';
+    @import '../assets/base.css';
+    @import '../assets/style.css';
+    @import '../assets/idialog.css';
 </style>
 

@@ -10,6 +10,8 @@ import Reg from './views/Reg.vue'
 import Cart from './views/Cart.vue'
 //商品详情页
 import Goods from './views/Goods.vue'
+//商品分类页
+import Category from './views/Category.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -38,6 +40,11 @@ export default new Router({
       path: '/goods',
       name: 'goods',
       component: Goods
+    },
+    {
+      path: '/category',
+      name: 'category',
+      component: Category
     },
     {
       path: '/about',

@@ -1,6 +1,7 @@
 <template>
     <div>
         <!-- header头部 -->
+        <Header/>
         <div class="md-box">
             <div class="center rel">
                 <div class=" md-register bg-fff">
@@ -24,8 +25,19 @@
         </div>
         <router-view/>
         <!-- footer脚部 -->
+        <Footer/>
     </div>
 </template>
+<script>
+import Header from '@/components/Header.vue'
+import Footer from '@/components/Footer.vue'
+export default {
+  components: {
+    Footer,
+    Header
+  }
+}
+</script>
 <style lang="scss" scoped>
 a, a:active, a:focus, a:hover {
     text-decoration: none;
