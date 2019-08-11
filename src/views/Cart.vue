@@ -21,7 +21,7 @@
                             <div class="dib">
                                 <p><a href="goods.php?id=3888">BeeFo小唱机</a></p>
                                 <p class="f12"><span class="f-666">礼物颜色:奶酪白<br>个性定制:直接购买</span>
-                                    <!-- <a href="javascript:void(0)" class="f-666">预览定制效果</a> --></p>
+                                     <a href="javascript:void(0)" class="f-666">预览定制效果</a> </p>
                             </div>
                         </td>
                         <td>￥399.0</td>
@@ -40,7 +40,7 @@
                             <div class="dib">
                                 <p><a href="goods.php?id=3920">时光沙漏</a></p>
                                 <p class="f12"><span class="f-666">礼物款式:风水版(-200)</span>
-                                    <!-- <a href="javascript:void(0)" class="f-666">预览定制效果</a> --></p>
+                                     <a href="javascript:void(0)" class="f-666">预览定制效果</a> </p>
                             </div>
                         </td>
                         <td>￥499.0</td>
@@ -53,25 +53,39 @@
                         <td id="sub_total_1351791">￥499.0</td>
                         <td><a href="javascript:void(0)" class="icon-bgr icon-delete" data-rec_id="1351791"></a></td>
                     </tr>
-                </tbody>
+                </tbody>  
             </table>
+
             <div class="cart-btm clear f16">
                 <div class="fl tl"><a href="/" class="dib m-t-5"><i class="icon-bgr icon-page-l m-r-10"></i>继续购物</a></div>
                 <div class="fr tr"><span>共2件商品</span><span class="m-l-20">合计：<b class="f18 f-d93732" id="goods-total">￥898.0</b></span><a href="flow.php?step=checkout" class="btn-red-sml f14 m-l-80 ani-bg">去结账</a></div>
             </div>
+
         </div>
     </div>
     <Footer />
 </div>
 </template>
+
 <script>
+//1.判断用户是否登录 2.判断用户购物车是否有商品 3.渲染用户购物车商品
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 export default {
-  components: {
-    Footer,
-    Header
-  }
+    //判断是否登录
+    created(){
+        if(localStorage.getItem('Authorization')){
+ 
+            this.username = localStorage.getItem('username');
+        }else{
+            this.goto = 'login'
+        }
+        // console.log(localStorage.getItem('Authorization'));
+    },
+    components: {
+        Footer,
+        Header,
+    }
 }
 </script>
 <style lang="scss" scoped>

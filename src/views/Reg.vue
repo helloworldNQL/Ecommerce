@@ -5,21 +5,24 @@
         <div class="md-box">
             <div class="center rel">
                 <div class=" md-register bg-fff">
-                <form action="user.php" method="post" id="formUser">
-                    <div class="line title rel lh1 clear"><b class="fl f24">注册礼无忧账号</b></div>
+                    <div class="line title rel lh1 clear"><b class="fl f24">注册礼无忧账号</b><span class="fr f16 f-666">已有账号<router-link to="/login" class="f-b28850">现在登录</router-link></span></div>
                     <!-- ##手机号正则验证 -->
-                    <div class="line m-t-28"><input type="text" name="extend_field5" id="extend_field5" placeholder="请输入手机号" class="db text"></div>
-                    <div class="line error-tips f12 f-d93732 phone-error">&nbsp;</div>
-                    <div class="line"><input type="password" name="password" id="password1" placeholder="请输入密码 6-12位" class="db text"></div>
-                    <div class="line error-tips f12 f-d93732 password-error">&nbsp;</div>
-                    <div class="line"><input type="password" name="confirm_password" id="confirm_password" placeholder="再次输入密码" class="db text"></div>
-                    <div class="line error-tips f12 f-d93732 confirm_password-error">&nbsp;</div>
-                    <div class="line p-l-10 lh1">注册即视为同意 <a href="javascript:void(0)" target="_blank" class="f-b28850">《礼无忧用户注册协议》</a></div>
-                    <div class="line m-t-20"><a href="javascript:void(0)" id="submit" class="btn-form f-fff tc full ani-bg">立即注册</a></div>
-                    <input name="act" type="hidden" value="act_register">
-                    <input type="hidden" name="back_act" value="http://www.liwuyou.com/category.php?id=234">
-                    <input type="hidden" name="agreement" value="1">
-                </form>	
+                    <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                        <el-form-item class="m-t-28 " label="手机号" prop="username">
+                            <el-input v-model.number="ruleForm.username" autocomplete="on"></el-input>
+                        </el-form-item>
+                        <el-form-item label="密码" prop="password">
+                            <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="确认密码" prop="checkPass">
+                            <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+                        </el-form-item>
+                        
+                        <el-form-item>
+                            <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button>
+                            <el-button @click="resetForm('ruleForm')">重置</el-button>
+                        </el-form-item>
+                    </el-form>
                 </div>
             </div>
         </div>
@@ -32,10 +35,140 @@
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 export default {
-  components: {
-    Footer,
-    Header
-  }
+    components: {
+        Footer,
+        Header
+    },
+/*     data(){
+        return {
+            username : "",
+            password : "",
+        }
+    },
+    methods :{
+       async regist() {
+           console.log(this.username);
+            if (this.password.trim() != "" && this.username.trim() != "") {
+                let status = await this.getData(
+                "get",
+                `//10.3.132.12:1945/regist?username=${this.username}`
+                );
+                if (status.data == 1) {
+                let msg = await this.getData(
+                    "post",
+                    "//10.3.132.12:1945/regist",
+                    {
+                    uname: this.username,
+                    pwd: this.password,
+                    order:''
+                    }
+                );
+                //   console.log('这里查看是否成功',msg.data)
+                if (msg.data == 1) {
+                    alert("注册成功！请登录！");
+                    // console.log(window.location.href);
+                    console.log(this.$route.path);
+                }
+                } else if (status.data == 0) {
+                alert("帐号已存在，请重新注册");
+                }
+            } else {
+                alert("请输入帐号或者密码");
+            }
+        }
+    }    */
+     data() {
+        let validateUsername = (rule, value, callback) => {
+            if (value == "") {
+                callback(new Error("请输入手机号"));
+            } else if (!this.isCellPhone(value)) {//引入methods中封装的检查手机格式的方法
+                callback(new Error("请输入正确的手机号!"));
+            } else {//10.3.132.12:1945/reg
+                this.$axios.get('http://localhost:1945/reg/check',{
+                    params:{
+                        username:value
+                    }
+                }).then(({data})=>{
+                    // console.log(data);
+                    if(data.code == 250){
+                        callback(new Error('用户名已存在'));
+                    }else{
+                        callback()
+                    }
+                })
+            }
+        };
+      var validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'));
+        } else {
+          if (this.ruleForm.checkPass !== '') {
+            this.$refs.ruleForm.validateField('checkPass');
+          }
+          callback();
+        }
+      };
+      var validatePass2 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请再次输入密码'));
+        } else if (value !== this.ruleForm.password) {
+          callback(new Error('两次输入密码不一致!'));
+        } else {
+          callback();
+        }
+      };
+      return {
+        ruleForm: {
+            password: '',
+            checkPass: '',
+            username: "",
+        },
+        rules: {
+            password: [
+                { validator: validatePass, trigger: 'blur' }
+            ],
+            checkPass: [
+                { validator: validatePass2, trigger: 'blur' }
+            ],
+            username: [
+                { validator: validateUsername, trigger: "blur" }
+            ]
+        }
+      };
+    },
+    methods: {
+        submitForm(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    let {username,password} = this.ruleForm;
+                    this.$axios.post('http://localhost:1945/reg',{
+                        username,
+                        password
+                    }).then(({data})=>{
+                        if(data.code == 200){
+                            alert("注册成功");
+                            let targetPath = this.$route.query.redirectTo;
+                            this.$router.replace(targetPath?targetPath:'/login');
+                            // console.log(this.$router);
+                        }
+                    })
+                } else {
+                    // console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+        isCellPhone(val) {
+            if (!/^1(3|4|5|6|7|8)\d{9}$/.test(val)) {
+                return false;
+            } else {
+                return true;
+            }
+        },
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      }
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -43,6 +176,7 @@ a, a:active, a:focus, a:hover {
     text-decoration: none;
     outline: 0;
     color: #333;
+    cursor: pointer;
 }
 .fr {
     float: right;

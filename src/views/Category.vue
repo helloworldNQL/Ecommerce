@@ -34,10 +34,10 @@
             <ul class="cat-list clear">
                 <!-- 数据渲染 -->
                 <li class="fl p-30 m-t-20 ani-bd-shadow  rel " v-for="(all,index) in goodslist" :key="index" >
-                    <router-link :to="{ path: 'Goods', query: { id: all.id }}" class="img-link"><img :src="all.image"  class="normalpic focus"></router-link>
-                    <p class="overtxt m-t-20 cat-name"><a v-text="all.name"></a></p>
-                    <p v-text="`￥${all.price}`"></p>
-                    <p class="f12 f-666 tr m-t-20 clear com-diy"><span class="fr" v-text="`￥${all.sale}人评价`"></span></p>
+                    <img  @click="goto(all.goodsid)" class="img-link normalpic focus" :src="all.img[0]">
+                    <p class="overtxt m-t-20 cat-name"><a v-text="all.goodsname"></a></p>
+                    <p v-text="`￥${all.goodsprice}`"></p>
+                    <p class="f12 f-666 tr m-t-20 clear com-diy"><span class="fr" v-text="`${all.sales}人评价`"></span></p>
                 </li>
             </ul>
             <!-- 分页 -->
@@ -48,6 +48,7 @@
         </div>
     </div>
     <Footer/>
+    <router-view/>
 </div>
 </template>
 
@@ -57,7 +58,7 @@ import Footer from '@/components/Footer.vue'
 export default {
     data(){
         return {
-            goodslist:[],
+            goodslist:'',
         }
     },
     computed : {
@@ -66,16 +67,19 @@ export default {
     methods : {
         cate(title){
             return title;
-            console.log(title);
+            // console.log(title);
+        },
+        goto(id){
+            // console.log(id);
+            this.$router.push({name:'goods',query:{id}})
         }
     },
     async created(){
         //   获取宫格数据
-        let list = await this.$axios(
-        "https://www.easy-mock.com/mock/5d402dbd99acfe0359e018a1/elema/goodslist"
+        let list = await this.$axios.get("http://localhost:1945/category/" 
         );
         this.goodslist = list.data;
-        console.log(list.data);   
+        // console.log(list.data);   
     },
     components: {
         Footer,

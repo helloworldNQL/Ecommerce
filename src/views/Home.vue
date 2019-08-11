@@ -1,6 +1,11 @@
 <template>
   <div class="home">
       <Header/>
+      <el-carousel height="480px">
+      <el-carousel-item v-for="(image, index) in images" :key="index">
+        <h3 class="small"><img :src="image" alt="" style="height: 480px;width: 100%;"></h3>
+      </el-carousel-item>
+    </el-carousel>
     <div class="services">
       <ul class="center clear">
           <li class="fl f18"><i class="icon-bgr1 icon-top1 m-r-16"></i>专属定制服务</li>
@@ -172,6 +177,17 @@ import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
     export default {
         name: 'home',
+        data() {
+            return {
+                images: [
+                    "http://img1.liwuyou.com/data/afficheimg/20190124jhxdek.jpg",
+                    "http://img1.liwuyou.com/data/afficheimg/20190124tvnesh.jpg",
+                    "http://img1.liwuyou.com/data/afficheimg/20190124zdevcc.jpg",
+                    "http://img1.liwuyou.com/data/afficheimg/20190124bfbolz.jpg",
+                    "http://img1.liwuyou.com/data/afficheimg/20190124iwnmkm.jpg",
+                ]
+            };
+        },
         components: {
             Footer,
             Header
@@ -182,6 +198,17 @@ import Footer from '@/components/Footer.vue'
 @import '../assets/base.css';
 @import '../assets/style.css';
 @import '../assets/idialog.css';
+.el-carousel{
+    padding-top: 30px;
+}
+
+//   .el-carousel__item:nth-child(2n) {
+//      background-color: #99a9bf;
+//   }
+  
+//   .el-carousel__item:nth-child(2n+1) {
+//      background-color: #d3dce6;
+// }
 .center {
     width: 1200px;
     margin: 0 auto;

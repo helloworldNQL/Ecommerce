@@ -1,0 +1,6 @@
+{
+    "mongo" : "mongodb://localhost:27017",
+    "database" : "present",
+    "PORT" : "1945",
+    "pKey":"nql"
+}

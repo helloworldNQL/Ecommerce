@@ -5,15 +5,18 @@
         <div class="md-box">
             <div class="center rel">
                 <div class="md-login bg-fff">
-                    <form name="formLogin">
-                        <div class="line title rel lh1 clear"><b class="fl f24">欢迎回来</b><span class="fr f16 f-666">还没有账号？ <router-link to="/reg" class="f-b28850">现在注册</router-link></span></div>
-                        <div class="line m-t-28"><input type="text" name="username" placeholder="请输入手机号／邮箱" class="db text"></div>
-                        <div class="line error-tips f12 f-d93732">&nbsp;</div>
-                        <div class="line"><input type="password" name="password" placeholder="请输入密码" class="db text"></div>
-                        <div class="line error-tips f12 f-d93732">&nbsp;</div>
-                        <div class="line"><a class="btn-form f-fff tc full ani-bg">立即登录</a></div>
-                        <div class="line clear m-t-20"><label class="fl"><input type="checkbox" value="1" checked="checked" name="remember" id="remember"> 30天内免登录</label><a href="###" class="fr">忘记密码？</a></div>
-                    </form>
+                    <div class="line title rel lh1 clear"><b class="fl f24">欢迎回来</b><span class="fr f16 f-666">还没有账号？ <router-link to="/reg" class="f-b28850">现在注册</router-link></span></div>
+                    <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px">
+                        <el-form-item class="line m-t-28" label="用户名" prop="username">
+                            <el-input type="tel" v-model="ruleForm.username" autocomplete="on"></el-input>
+                        </el-form-item>
+                        <el-form-item class="line m-t-28" label="密码" prop="password">
+                            <el-input type="password" v-model="ruleForm.password"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="success" class="btn-form text " @click="submitForm">登录</el-button>
+                        </el-form-item>
+                    </el-form>
                 </div>
             </div>
         </div>
@@ -29,6 +32,72 @@ export default {
   components: {
     Footer,
     Header
+  },
+  data() {
+    //   自定义校验规则
+    let validatePass = (rule, value, callback) => {
+      callback();
+    };
+    let validateUsername = (rule, value, callback) => {
+      if (value == "") {
+        callback(new Error("请输入手机号"));
+        } else if (!this.isCellPhone(value)) {//引入methods中封装的检查手机格式的方法
+        callback(new Error("请输入正确的手机号!"));
+        } else {
+        callback();
+        }
+    };
+    return {
+      ruleForm: {
+        username: "",
+        password: ""
+      },
+      rules: {
+        password: [{ validator: validatePass, trigger: "blur" }],
+        username: [{ validator: validateUsername, trigger: "blur" }]
+      }
+    };
+  },
+  methods: {
+     submitForm() {
+        this.$refs['ruleForm'].validate(valid => {
+            if (valid) {
+                let {username,password} = this.ruleForm;
+                this.$axios.get('http://localhost:1945/login',{
+                params:{
+                    username,
+                    password
+                }
+            }).then((res)=>{
+                // console.log(res)
+                let {data,headers} = res
+                // console.log(res);
+                if(data.code == 250){
+                    alert('用户名或密码错误！')
+                }else if(data.code === 200){
+                    // 保存登录信息
+                    localStorage.setItem('Authorization',data.data);
+                    // console.log(username.slice(0,3));
+                    localStorage.setItem('username',username.slice(0,3)+'...');
+                    // 获取目标路径
+                    let targetPath = this.$route.query.redirectTo;
+                    
+                    this.$router.replace(targetPath?targetPath:'/home')
+                }
+            })
+        }
+      });
+    },
+    isCellPhone(val) {
+        if (!/^1(3|4|5|6|7|8)\d{9}$/.test(val)) {
+        return false;
+        } else {
+        return true;
+        }
+    },
+  },
+  created() {
+    // console.log("Login:", this.$route);
   }
 }
 </script>
@@ -94,7 +163,7 @@ a, a:active, a:focus, a:hover {
             margin-top: 28px;
         }
         .text {
-            width: 388px;
+            width: 312px;
             padding: 0 10px;
             border: 1px solid #eee;
             margin: 0;
@@ -105,6 +174,7 @@ a, a:active, a:focus, a:hover {
             display: block;
         }
         .btn-form {
+            border: none;
             display: inline-block;
             height: 48px;
             line-height: 48px;

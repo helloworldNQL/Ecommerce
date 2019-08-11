@@ -5,14 +5,14 @@
         <div class="category tc fl" id="category">
         	<a href="#" class="f16 lh2">礼物分类<i class="icon-bgr icon-list m-l-5"></i></a>
         	<div id="category_pop" class="category-pop tc dn">
-        	            <a href="category.php?id=385">少女心饰</a>
-                        <a href="category.php?id=386">萌萌美物</a>
-                        <a href="category.php?id=387">为爱停留</a>
-                        <a href="category.php?id=388">潮流时尚</a>
-                        <a href="category.php?id=389">科技达人</a>
-                        <a href="category.php?id=390">幸福烙印</a>
-                        <a href="category.php?id=391">爱情保鲜</a>
-                        <a class="last">&nbsp;</a>
+                <router-link to="/category">少女心饰</router-link>
+                <router-link to="/category">萌萌美物</router-link>
+                <router-link to="/category">为爱停留</router-link>
+                <router-link to="/category">潮流时尚</router-link>
+                <router-link to="/category">科技达人</router-link>
+                <router-link to="/category">幸福烙印</router-link>
+                <router-link to="/category">爱情保鲜</router-link>
+                <a class="last">&nbsp;</a>
             </div>
         </div>
         <div class="nav fl f16 lh2 m-t-28 rel">
@@ -20,30 +20,67 @@
         --><a href="/category.php?id=234">创意礼物</a><!--
         --><a href="/search.php?page=1&amp;sort=goods_id&amp;order=DESC#goods_list">新品上架</a><!--
         --><a href="/category.php?id=127">七夕情人节</a><!--
-        <img src="themes/pc/images/christ_icon.png?v20170106" class="dib christ-icon">--></div>
-        
+        <img src="themes/pc/images/christ_icon.png?v20170106" class="dib christ-icon">--></div>     
         <div class="operate fr m-t-31 rel" id="user_operate">
-        	<a href="user.php" id="nav_user"><i class="icon-bgr icon-user m-7 ani-bg"></i></a>
-            <a href="flow.php" class="m-l-5" id="nav_cart"><i class="icon-bgr icon-cart ani-bg"></i><span class="cart-count" id="cart_count">1</span></a>
-            <div class="user-box user-signin dn" id="nav_user_box">
-            	<i class="icon-bgr icon-operate"></i>
-                <dl class="tc">
-                                <dt class="f-b28850"><a class="f-b28850" href="/user.php?act=login">登录</a> / <a class="f-b28850" href="/user.php?act=register">注册</a></dt>
-                <dd class="lh2"><a href="/history.php">浏览历史</a></dd>
-                <dd class="lh2"><a href="/user.php?act=order_list">我的订单</a></dd>
-                <dd class="lh2"><a href="/user.php?act=collection_list">我的收藏</a></dd>
-              
-                                </dl>
-            </div>
-            <div class="user-box user-cart dn" id="nav_cart_box"><i class="icon-bgr icon-operate"></i><table class="f12"><tbody><tr class="gds"><td width="25%"><a href="goods.php?id=3888"><img width="60px" src="http://img3.liwuyou.com/images/201811/source_img/3888_P_1541475290472.jpg!list115.jpg"></a></td><td class="overtxt" width="50%"><a href="goods.php?id=3888">BeeFo小唱机</a><br>礼物颜色:奶酪白<br>个性定制:直接购买</td><td class="tr" width="25%">X1<br>￥399.0<br><a class="remove_item" data-rec-id="1351788" href="javascript:void(0)">删除</a></td></tr><tr><td colspan="3"><div class="clear m-t-10"><span class="fl">共计1件商品<br><b>合计：<span class="f-d93732">￥399.0</span></b></span><a href="flow.php" class="fr btn-red-sml ani-bg">去购物车结算</a></div></td></tr></tbody></table></div>
+            <!-- 判断登录状态  -->
+        	<router-link to="/login" class="f-b28850" v-if="goto === 'login'">登录</router-link>
+            <el-button type="text" v-else @click="logout" v-text="`${username}退出登录`"></el-button>
+            <router-link to="/cart" class="m-l-5"><i class="icon-bgr icon-cart ani-bg" style="background-position: -164px 0px;"></i><span class="cart-count" id="cart_count">1</span></router-link>
+            <div class="user-box user-cart dn nav_cart_box"><i class="icon-bgr icon-operate"></i><table class="f12"><tbody><tr class="gds"><td width="25%"><a href="goods.php?id=3888"><img width="60px" src="http://img3.liwuyou.com/images/201811/source_img/3888_P_1541475290472.jpg!list115.jpg"></a></td><td class="overtxt" width="50%"><a href="goods.php?id=3888">BeeFo小唱机</a><br>礼物颜色:奶酪白<br>个性定制:直接购买</td><td class="tr" width="25%">X1<br>￥399.0<br><a class="remove_item" data-rec-id="1351788" href="javascript:void(0)">删除</a></td></tr><tr><td colspan="3"><div class="clear m-t-10"><span class="fl">共计1件商品<br><b>合计：<span class="f-d93732">￥399.0</span></b></span><a href="flow.php" class="fr btn-red-sml ani-bg">去购物车结算</a></div></td></tr></tbody></table></div>
         </div>
         <div class="search fr m-t-31">
-        <input type="text" name="search" id="head-search"><a href="javascript:void(0)" class="icon-bgr icon-search m-l-5" id="head-searchbtn"></a>
+        <input type="text" name="search" id="head-search"><a class="icon-bgr icon-search m-l-5" id="head-searchbtn"></a>
         </div>
     </div>
 </div>
 </template>
+<script>
+export default {
+    data(){
+        return{
+            goto:'out',
+            username:'',
+        }
+    },
+    //获取localhoststronge的登录信息
+    created(){
+        if(localStorage.getItem('Authorization')){
+            this.goto = 'out'
+            this.username = localStorage.getItem('username');
+        }else{
+            this.goto = 'login'
+        }
+        // console.log(localStorage.getItem('Authorization'));
+    },
+    methods :{
+        logout(){
+            this.$confirm('是否确定退出登录?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+            }).then(() => {
+                this.$message({
+                    type: 'success',
+                    message: '退出登录成功!'
+                });
+                localStorage.removeItem('Authorization')
+                localStorage.removeItem('username');
+                this.goto = 'login';
+            }).catch(() => {
+                // this.$message({
+                //     type: 'info',
+                //     message: '已取消退出登录'
+                // });          
+            });                 
+        }
+    }
+}
+</script>
+
 <style lang="scss" scoped>
+.header{
+    width: 100%;
+}
 .m-t-17 {
     margin-top: 17px;
 }
@@ -162,7 +199,7 @@ abbr, acronym, fieldset, img {
             }  
         }
         .category:hover .category-pop{
-                display: block;
+            display: block;
         }
         .category>a {
             display: inline-block;
@@ -208,12 +245,13 @@ abbr, acronym, fieldset, img {
                 position: absolute;
                 top: 48px;
                 border: 1px solid #ececec;
-                z-index: 1;
+                z-index: 99;
                 background: #fff;
                 padding: 30px 0;
             }
+            
             .user-cart {
-                display: none;
+                // display: none;
                 width: 296px;
                 padding: 20px 30px;
                 right: -18px;
