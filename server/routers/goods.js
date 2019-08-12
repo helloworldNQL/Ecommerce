@@ -23,4 +23,17 @@ Router.get('/:id', async (req, res) => {
         return res.send(formatData({code:250}))
     }
 })
+
+// //加入购物车
+// // 查用户名
+// Router.get('/update',async (req,res)=>{
+//     // async & await 实现：用同步的代码实现异步操作
+//     // async * await 是ES7的知识
+//     let {username} = req.query;
+//     let data = await update('user',{username});
+
+    
+// })
+
+
 module.exports = Router;

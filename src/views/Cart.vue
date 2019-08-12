@@ -98,11 +98,12 @@ export default {
         // }).then(({data})=>{
         //     // console.log(data);
         //     if(data.code == 250){
-        //         callback(new Error('用户名已存在'));
+        //         callback(new Error('商品已存在'));
         //     }else{
         //         callback()
         //     }
         // })
+        //
     },
     components: {
         Footer,

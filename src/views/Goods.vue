@@ -89,8 +89,8 @@
             </div>
             <div class="btn-box clear m-t-20 lh1">
               <a
-                href="javascript:void(0)"
-                id="add_to_cart"
+                @click="addcart()"
+                
                 class="btn-red-single m-r-10 fl ani-bg"
               >直接购买</a>
               <a
@@ -132,13 +132,22 @@ export default {
     // let {data} = await this.$axios.get('/goods',{id});
     let { data } = await this.$axios.get("http://localhost:1945/goods/" + id);
     this.goods = data[0];
-    // console.log(this.goods);
+    console.log(this.goods);
     this.bigimg=data[0].img[0];
+    // this.goodsid = data[0].goodsid;
   },
   methods:{
       chang(imgs){
           this.bigimg=imgs;
+      },
+      //加入购物车
+      addcart(){
+        //获取用户名发起请求添加购物车商品
+        let username = localStorage.getItem('username');
+        // console.log(username);
+        // console.log(this.$route.query.id);
       }
+
   },
   components: {
     Footer,

@@ -179,6 +179,7 @@ abbr, acronym, fieldset, img {
             border-top: 5px solid #484442;
             position: relative;
             top: -5px;
+            z-index: 99;
             .category-pop {
                 position: absolute;
                 top: 93px;
@@ -198,7 +199,7 @@ abbr, acronym, fieldset, img {
                 }
             }  
         }
-        .category:hover .category-pop{
+        .category:hover .category-pop,.category{
             display: block;
         }
         .category>a {
