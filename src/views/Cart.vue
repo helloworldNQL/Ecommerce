@@ -2,7 +2,7 @@
 <div>
     <Header />
     <div class="bg-f5f5f5 p-b-40" style="padding-top: 62px;">
-        <div class="shopping-cart center bg-fff tc">
+        <div v-if="status == 'yes'" class="shopping-cart center bg-fff tc">
             <table>
                 <thead>
                     <tr>
@@ -62,6 +62,11 @@
             </div>
 
         </div>
+        <div v-else-if="status == 'no'" style="line-height: 150px;
+        padding: 75px 0px;font-size:28px;" class="center bg-fff tc">
+            <p>登录后才可以加入购物车，您还未登录 &nbsp;&nbsp;<router-link to="/login" >请先登录</router-link></p>
+            
+        </div>
     </div>
     <Footer />
 </div>
@@ -72,15 +77,32 @@
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 export default {
-    //判断是否登录
-    created(){
-        if(localStorage.getItem('Authorization')){
- 
-            this.username = localStorage.getItem('username');
-        }else{
-            this.goto = 'login'
+    data(){
+        return{
+            status:''
         }
-        // console.log(localStorage.getItem('Authorization'));
+    },
+    
+    created(){
+        //判断是否登录
+        if(localStorage.getItem('Authorization')){
+            this.status = 'yes'
+        }else{
+            this.status = 'no'
+        }
+        //发送请求查看用户购物车是否有商品
+        // this.$axios.get('http://localhost:1945/reg/check',{
+        //     params:{
+        //         username:value
+        //     }
+        // }).then(({data})=>{
+        //     // console.log(data);
+        //     if(data.code == 250){
+        //         callback(new Error('用户名已存在'));
+        //     }else{
+        //         callback()
+        //     }
+        // })
     },
     components: {
         Footer,

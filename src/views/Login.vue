@@ -63,14 +63,12 @@ export default {
         this.$refs['ruleForm'].validate(valid => {
             if (valid) {
                 let {username,password} = this.ruleForm;
-                this.$axios.get('http://localhost:1945/login',{
-                params:{
+                this.$axios.post('http://localhost:1945/login',{   
                     username,
-                    password
-                }
+                    password       
             }).then((res)=>{
                 // console.log(res)
-                let {data,headers} = res
+                let {data} = res
                 // console.log(res);
                 if(data.code == 250){
                     alert('用户名或密码错误！')
@@ -78,7 +76,7 @@ export default {
                     // 保存登录信息
                     localStorage.setItem('Authorization',data.data);
                     // console.log(username.slice(0,3));
-                    localStorage.setItem('username',username.slice(0,3)+'...');
+                    localStorage.setItem('username',username);
                     // 获取目标路径
                     let targetPath = this.$route.query.redirectTo;
                     

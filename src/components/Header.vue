@@ -46,7 +46,7 @@ export default {
     created(){
         if(localStorage.getItem('Authorization')){
             this.goto = 'out'
-            this.username = localStorage.getItem('username');
+            this.username = localStorage.getItem('username').slice(0,3)+'...';
         }else{
             this.goto = 'login'
         }
