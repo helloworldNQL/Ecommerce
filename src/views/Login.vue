@@ -63,6 +63,8 @@ export default {
         this.$refs['ruleForm'].validate(valid => {
             if (valid) {
                 let {username,password} = this.ruleForm;
+                username = username*1;
+                console.log(typeof(username));
                 this.$axios.post('http://localhost:1945/login',{   
                     username,
                     password       

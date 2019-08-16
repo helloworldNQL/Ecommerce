@@ -132,7 +132,7 @@ export default {
     // let {data} = await this.$axios.get('/goods',{id});
     let { data } = await this.$axios.get("http://localhost:1945/goods/" + id);
     this.goods = data[0];
-    console.log(this.goods);
+    // console.log(this.goods);
     this.bigimg=data[0].img[0];
     // this.goodsid = data[0].goodsid;
   },
@@ -146,6 +146,31 @@ export default {
         let username = localStorage.getItem('username');
         // console.log(username);
         // console.log(this.$route.query.id);
+        // console.log(this.goods);
+        let number = 1;
+        let {goodsid,goodsname,goodsprice,img,sizes} =this.goods;
+        let total = goodsprice;
+        img = img[0];
+        sizes =sizes[0];
+        // console.log(goodsid,goodsname,goodsprice,img,sizes)
+        this.$axios.post('http://localhost:1945/goods/addcart',{
+            username,
+            goodsid,
+            goodsname,
+            number,
+            sizes,
+            goodsprice,
+            total,
+            img,
+            sizes
+        }).then(({data})=>{
+            if(data.code == 200){
+                alert("加入购物车成功");
+                let targetPath = this.$route.query.redirectTo;
+                this.$router.replace(targetPath?targetPath:'/cart');
+                // console.log(this.$router);
+            }
+        })
       }
 
   },

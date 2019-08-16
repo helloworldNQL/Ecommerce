@@ -15,43 +15,23 @@
                     </tr>
                 </thead>
                 <tbody id="cart_list">
-                    <tr data-rec-id="1351794">
+                    <tr v-for="(goods,index) in this.goodslist" :key="index">
                         <td class="info tl">
-                            <a href="goods.php?id=3888"><img src="http://img3.liwuyou.com/images/201811/source_img/3888_P_1541475290472.jpg!list115.jpg" class="dib m-r-5"></a>
+                            <a><img :src="goods.img" class="dib m-r-5"></a>
                             <div class="dib">
-                                <p><a href="goods.php?id=3888">BeeFo小唱机</a></p>
-                                <p class="f12"><span class="f-666">礼物颜色:奶酪白<br>个性定制:直接购买</span>
-                                     <a href="javascript:void(0)" class="f-666">预览定制效果</a> </p>
+                                <p><a v-text="goods.goodsname"></a></p>
+                                <p class="f12"><span class="f-666"  v-text="`礼物颜色:${goods.sizes}`"><br>个性定制:直接购买</span></p>
                             </div>
                         </td>
-                        <td>￥399.0</td>
+                        <td  v-text="`￥${goods.goodsprice}`"></td>
                         <td>
-                            <div class="dib count-box"><a href="javascript:void(0)" class="icon-bgr icon-sub dib"></a><input type="text" value="1" class="dib tc icon-number" data-rec_id="1351794"><a href="javascript:void(0)" class="icon-bgr icon-add dib"></a></div>
+                            <div class="dib count-box"><a  class="icon-bgr icon-sub dib"></a><input type="text" v-bind:value="goods.number" class="dib tc icon-number" data-rec_id="1351794"><a  class="icon-bgr icon-add dib"></a></div>
                         </td>
                         <td>
                             有库存
                         </td>
-                        <td id="sub_total_1351794">￥399.0</td>
+                        <td id="sub_total_1351794" v-text="goods.total"></td>
                         <td><a href="javascript:void(0)" class="icon-bgr icon-delete" data-rec_id="1351794"></a></td>
-                    </tr>
-                    <tr data-rec-id="1351791">
-                        <td class="info tl">
-                            <a href="goods.php?id=3920"><img src="http://img2.liwuyou.com/images/201901/source_img/3920_P_1548127516986.jpg!list115.jpg" class="dib m-r-5"></a>
-                            <div class="dib">
-                                <p><a href="goods.php?id=3920">时光沙漏</a></p>
-                                <p class="f12"><span class="f-666">礼物款式:风水版(-200)</span>
-                                     <a href="javascript:void(0)" class="f-666">预览定制效果</a> </p>
-                            </div>
-                        </td>
-                        <td>￥499.0</td>
-                        <td>
-                            <div class="dib count-box"><a href="javascript:void(0)" class="icon-bgr icon-sub dib"></a><input type="text" value="1" class="dib tc icon-number" data-rec_id="1351791"><a href="javascript:void(0)" class="icon-bgr icon-add dib"></a></div>
-                        </td>
-                        <td>
-                            有库存
-                        </td>
-                        <td id="sub_total_1351791">￥499.0</td>
-                        <td><a href="javascript:void(0)" class="icon-bgr icon-delete" data-rec_id="1351791"></a></td>
                     </tr>
                 </tbody>  
             </table>
@@ -79,10 +59,11 @@ import Footer from '@/components/Footer.vue'
 export default {
     data(){
         return{
-            status:''
+            status:'',
+            goodslist:'',
+            nubmer:''
         }
     },
-    
     created(){
         //判断是否登录
         if(localStorage.getItem('Authorization')){
@@ -91,19 +72,22 @@ export default {
             this.status = 'no'
         }
         //发送请求查看用户购物车是否有商品
-        // this.$axios.get('http://localhost:1945/reg/check',{
-        //     params:{
-        //         username:value
-        //     }
-        // }).then(({data})=>{
-        //     // console.log(data);
-        //     if(data.code == 250){
-        //         callback(new Error('商品已存在'));
-        //     }else{
-        //         callback()
-        //     }
-        // })
-        //
+        let username = localStorage.getItem('username');
+        console.log(username);
+        this.$axios.post('http://localhost:1945/goods/cart',{
+            username
+        }).then(({data})=>{
+            if(data.code == 250){
+                //没有商品快去购物吧
+                alert("购物车没有商品,快去购物吧:)");
+                let targetPath = this.$route.query.redirectTo;
+                this.$router.replace(targetPath?targetPath:'/home');
+            }else{
+                this.goodslist = data;
+                console.log(data);
+            }
+        })
+        
     },
     components: {
         Footer,
