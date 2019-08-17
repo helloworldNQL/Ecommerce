@@ -146,9 +146,9 @@ export default {
         let username = localStorage.getItem('username');
         // console.log(username);
         // console.log(this.$route.query.id);
-        // console.log(this.goods);
+        console.log(this.goods);
         let number = 1;
-        let {goodsid,goodsname,goodsprice,img,sizes} =this.goods;
+        let {goodsid,goodsname,goodsprice,img,sizes,kucun} =this.goods;
         let total = goodsprice;
         img = img[0];
         sizes =sizes[0];
@@ -162,7 +162,8 @@ export default {
             goodsprice,
             total,
             img,
-            sizes
+            sizes,
+            kucun
         }).then(({data})=>{
             if(data.code == 200){
                 alert("加入购物车成功");

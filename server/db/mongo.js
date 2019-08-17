@@ -42,7 +42,7 @@ exports.insert = (colName, data) => {
 }
 
 // @删 : 删除一条或多条数据
-exports.delete = (colName, query) => {
+exports.delet = (colName, query) => {
     return new Promise(async (resolve, reject) => {
 
         let { db, client } = await connect();
