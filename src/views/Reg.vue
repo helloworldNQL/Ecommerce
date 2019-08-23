@@ -39,44 +39,6 @@ export default {
         Footer,
         Header
     },
-/*     data(){
-        return {
-            username : "",
-            password : "",
-        }
-    },
-    methods :{
-       async regist() {
-           console.log(this.username);
-            if (this.password.trim() != "" && this.username.trim() != "") {
-                let status = await this.getData(
-                "get",
-                `//10.3.132.12:1945/regist?username=${this.username}`
-                );
-                if (status.data == 1) {
-                let msg = await this.getData(
-                    "post",
-                    "//10.3.132.12:1945/regist",
-                    {
-                    uname: this.username,
-                    pwd: this.password,
-                    order:''
-                    }
-                );
-                //   console.log('这里查看是否成功',msg.data)
-                if (msg.data == 1) {
-                    alert("注册成功！请登录！");
-                    // console.log(window.location.href);
-                    console.log(this.$route.path);
-                }
-                } else if (status.data == 0) {
-                alert("帐号已存在，请重新注册");
-                }
-            } else {
-                alert("请输入帐号或者密码");
-            }
-        }
-    }    */
      data() {
         let validateUsername = (rule, value, callback) => {
             if (value == "") {

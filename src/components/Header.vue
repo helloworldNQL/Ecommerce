@@ -17,9 +17,9 @@
         </div>
         <div class="nav fl f16 lh2 m-t-28 rel">
         <a class="fst" id="gift_guide">送礼导航</a><!--
-        --><a href="/category.php?id=234">创意礼物</a><!--
-        --><a href="/search.php?page=1&amp;sort=goods_id&amp;order=DESC#goods_list">新品上架</a><!--
-        --><a href="/category.php?id=127">七夕情人节</a><!--
+        --><a >创意礼物</a><!--
+        --><a >新品上架</a><!--
+        --><a>七夕情人节</a><!--
         <img src="themes/pc/images/christ_icon.png?v20170106" class="dib christ-icon">--></div>     
         <div class="operate fr m-t-31 rel" id="user_operate">
             <!-- 判断登录状态  -->
